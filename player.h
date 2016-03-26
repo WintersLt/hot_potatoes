@@ -12,6 +12,12 @@ class Player
 
 	bool init();
 	void registerToRm();
+	void play();
+
+	private:
+	void processMasterCmd();
+	void forwardPotato(int idx);
+	int getRand();
 
 	private:
 	int mPort;
@@ -20,6 +26,7 @@ class Player
 	uint32_t mPlayerId;
 	ServerSocket mPotatoServer; //listen for potato and term
 	FD_SOCKET_MAP_t mSockMap;  //store left right and master sock
+	uint32_t mNumPlayers;
 };
 
 #endif

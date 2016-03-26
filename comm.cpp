@@ -86,6 +86,18 @@ int Socket::readString(std::string& s)
 	delete[] buf;
 	return retval;
 }
+
+int Socket::peek()
+{
+	char buf[32] = {};
+	return recv(mFd, buf, 32, MSG_PEEK | MSG_DONTWAIT);	
+}
+
+int Socket::close()
+{
+	return ::close(mFd);
+}
+
 ////////////////////////////////////////
 ServerSocket::ServerSocket():mPort(0)
 {}
@@ -124,7 +136,7 @@ bool ServerSocket::start_server()
 	{
 		printe("ServerSocket::start_server: failed to set socket options\n");
 		perror ("setsockopt reuse error");
-		close(s);
+		::close(s);
 		return false;
 	}
 
@@ -133,7 +145,7 @@ bool ServerSocket::start_server()
 	{
 		printe("ServerSocket::start_server: failed to bind socket\n");
 		perror("bind error");
-		close(s);
+		::close(s);
 		return false;
 	}
 
@@ -145,7 +157,7 @@ bool ServerSocket::start_server()
 		socklen_t len = sizeof(name);
 		if (getsockname(s, (sockaddr *) &name, &len) < 0) {
 			perror("getsockname error");
-			close(s);
+			::close(s);
 			return(0);
 		}
 		mPort = ntohs(name.sin_port);
@@ -155,7 +167,7 @@ bool ServerSocket::start_server()
 	if (listen(s, 128)) 
 	{
 		perror("listen error");
-		close(s);
+		::close(s);
 		return false;
 	}
 
@@ -224,16 +236,15 @@ bool ClientSocket::connect_to_server()
 	}
 
 	unsigned int num_retries = 0;
-	while (connect(s, (sockaddr *) &saddr, sizeof(sockaddr)) != 0
-			&& num_retries <= MAX_RETRIES)
+	while (connect(s, (sockaddr *) &saddr, sizeof(sockaddr)) != 0)
 	{
-		if (errno != EINTR) 
+		num_retries++;
+		if(num_retries > MAX_RETRIES)
 		{
 			perror("connect error");
-			close(s);
+			::close(s);
 			return false;
 		}
-		num_retries++;
 		sleep(RETRY_INTERVAL_SEC);
 	}
 	setFd(s);

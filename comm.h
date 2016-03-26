@@ -62,6 +62,10 @@ class Socket
 	{
 		return mFd;
 	}
+
+	int peek();
+	int close();
+
 	private:
 	int mFd;
 };

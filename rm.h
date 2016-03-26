@@ -14,6 +14,12 @@ class RingMaster
 	bool init();
 	void registerPlayers();
 	void sendNeighbourIds();
+	void sendPotato();
+	void waitForPotato();
+	void terminateAllPlayers();
+
+	private:
+	std::string getHostName(std::string& ip);
 
 	private:
 	ServerSocket mRmServer;

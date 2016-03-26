@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=-c -Wall -g
 LDFLAGS= -L .
-SOURCES=comm.cpp rm.cpp player.cpp
+SOURCES=comm.cpp rm.cpp player.cpp potato.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=hello
 
@@ -13,10 +13,10 @@ all: $(SOURCES) $(OBJECTS) master player
 	$(CC) $(CFLAGS) $(INCLUDES) $< -o $@
 
 master: 
-	$(CC) $(INCLUDES) rm.cpp comm.cpp -o $@ $(LDFLAGS) -lm
+	$(CC) $(INCLUDES) rm.cpp comm.cpp potato.cpp -o $@ $(LDFLAGS) -lm
 
 player: 
-	$(CC) $(INCLUDES) player.cpp comm.cpp -o $@ $(LDFLAGS) -lm
+	$(CC) $(INCLUDES) player.cpp comm.cpp potato.cpp -o $@ $(LDFLAGS) -lm
 
 clean:
 	rm -f *.o
