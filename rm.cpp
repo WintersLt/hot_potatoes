@@ -6,21 +6,12 @@
  * map the socket fd to player id
  * once all players have registered, create and send token to one of the nodes
  * check the ttl before sending token
- * put all the sockets for select/epoll
+ * put all the sockets for select/poll
  * once a read event is recieved from one of the sockets
  * read the token, and print its contents
  * send signal to every player to shutdown
  * shutdown self
  */
-
-// TODO 
-// Complete player side poll
-//   Recive potato, decrement hop count, check if zero
-//   append self to pathlist, forward
-// Also send the total number of players to each player, helful for printing left aand right neighbour
-// Add prints as per specs
-// read spec again
-// Run on VCL once
 
 #include "comm.h"
 #include "rm.h"

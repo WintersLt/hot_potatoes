@@ -11,7 +11,7 @@
 #define DEBUG 0
 #define printd(...) if(DEBUG) printf(__VA_ARGS__)
 
-#define ERROR 1
+#define ERROR 0
 #define printe(...) if(DEBUG) printf(__VA_ARGS__)
 
 #define handle_error(msg) \
