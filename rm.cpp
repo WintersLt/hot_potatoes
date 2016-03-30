@@ -108,16 +108,16 @@ void RingMaster::sendNeighbourIds()
 void RingMaster::sendPotato()
 {
 	int dest_player = rand() % mNumPlayers;	
-	printf("All players present, sending potato to player %d\n", dest_player);
 	Potato p(mHops);
 	if(p.getTtl() == 0)
 	{
 		printd("RingMaster::sendPotato() numHops is 0, terminating all players\n");
-		p.printTrace();
+		//p.printTrace();
 		terminateAllPlayers();
 		//TODO cleanup
 		exit(0);
 	}
+	printf("All players present, sending potato to player %d\n", dest_player);
 
 	//Protocol is 
 	//Command<int>Potato<serialized string>
@@ -224,6 +224,11 @@ int main(int argc, char* argv[])
 	
 	printd("starting master with port<%d>, num_players<%d> hops<%d>\n", port,
 			num_players, hops);
+	if(port < 1024)
+	{
+		printe("Port should be greater than 1024\n");
+		exit(1);
+	}
 	char host[256] = {};
 	gethostname(host, 255);
 	printf("Potato Master on %s\n", host);
